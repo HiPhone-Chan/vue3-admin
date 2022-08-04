@@ -144,7 +144,6 @@ const { list, total, listLoading, listQuery,
 const { temp, dialog, rules,
   handleCreate, handleUpdate, handlePassword } = useUserDialog()
 
-
 </script>
 
 <script>

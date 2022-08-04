@@ -1,5 +1,5 @@
 import { ref, onMounted } from 'vue';
-import { checkHealth } from '@/api/management';
+import { findAll } from '@/api/log'
 
 export default function useUserData() {
   const list = ref([]);
@@ -8,13 +8,13 @@ export default function useUserData() {
 
   const getData = async () => {
     listLoading.value = true
-    const resp = await checkHealth()
-    const components = resp.data.components
+    const resp = await findAll()
+    const loggers = resp.data.loggers
     const tmpList = []
-    for (const key in components) {
+    for (const key in loggers) {
       tmpList.push({
         key,
-        ...components[key]
+        ...loggers[key]
       })
     }
     list.value = tmpList

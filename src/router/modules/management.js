@@ -19,6 +19,56 @@ const managementRouter = {
         icon: 'people',
         noCache: true
       }
+    },
+    {
+      path: 'configuration',
+      component: () => import('pages/management/configuration/index.vue'),
+      name: 'configuration-management',
+      meta: {
+        title: 'configuration-management',
+        icon: 'documentation',
+        noCache: true
+      }
+    },
+    {
+      path: 'logs',
+      meta: {
+        title: 'logs-management',
+        icon: 'documentation',
+        noCache: true
+      },
+      children: [
+        {
+          path: 'index',
+          component: () => import('pages/management/logs/index.vue'),
+          name: 'logs-management',
+          meta: {
+            title: 'logs-management',
+            icon: 'documentation',
+            noCache: true
+          }
+        },
+        {
+          path: 'operation-log',
+          component: () => import('pages/management/logs/operation-log.vue'),
+          name: 'operation-log-management',
+          meta: {
+            title: 'operation-log',
+            icon: 'documentation',
+            noCache: true
+          }
+        }
+      ]
+    },
+    {
+      path: 'health',
+      component: () => import('pages/management/health/index.vue'),
+      name: 'health-management',
+      meta: {
+        title: 'health-management',
+        icon: 'documentation',
+        noCache: true
+      }
     }
   ]
 }

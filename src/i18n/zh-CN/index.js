@@ -66,6 +66,9 @@ export default {
     manager: '管理员',
     management: '管理',
     'user-management': '用户管理',
+    'health-management': '健康管理',
+    'logs-management': '日志管理',
+    'configuration-management': '配置管理',
     'operation-log': '操作日志'
   },
   navbar: {
