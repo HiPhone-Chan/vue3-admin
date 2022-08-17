@@ -1,0 +1,14 @@
+{
+  "page401": "401",
+  "page404": "404",
+  "home": "首页",
+  "profile": "我的中心",
+  "dashboard": "首页",
+  "External Link": "外链",
+  "management": "管理",
+  "user-management": "用户管理",
+  "configuration-management": "配置管理",
+  "logs-management": "日志管理",
+  "operation-log": "操作日志",
+  "health-management": "健康管理"
+}
