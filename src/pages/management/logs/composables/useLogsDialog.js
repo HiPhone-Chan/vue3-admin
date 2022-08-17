@@ -13,7 +13,10 @@ export default function () {
   const handleUpdate = (row) => {
     dialog.status = 'update'
     dialog.visible = true
-    temp.value = Object.assign({}, row)
+    temp.value = {
+      name: row.name,
+      level: row.effectiveLevel
+    }
 
     nextTick(() => {
       instance.refs['dataForm'].clearValidate()

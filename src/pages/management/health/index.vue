@@ -12,7 +12,7 @@
       border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" :label="$t('table.id')" width="65"
         type="index" />
-      <el-table-column align="center" label="key" width="115">
+      <el-table-column align="center" label="key" width="135">
         <template v-slot="scope">
           <span>{{ scope.row.key }}</span>
         </template>

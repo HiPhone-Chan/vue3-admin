@@ -12,34 +12,44 @@
       border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" :label="$t('table.id')" width="65"
         type="index" />
-      <el-table-column align="center" label="key" min-width="215">
+      <el-table-column align="center" :label="$t('table.name')" min-width="215">
         <template v-slot="scope">
-          <span>{{ scope.row.key }}</span>
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="配置" width="95">
+      <el-table-column align="center" label="配置级别" width="95">
         <template v-slot="scope">
           <span>{{ scope.row.configuredLevel }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="生效" width="95">
+      <el-table-column align="center" label="生效级别" width="95">
         <template v-slot="scope">
           <span>{{ scope.row.effectiveLevel }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('table.actions')"
         class-name="small-padding fixed-width">
-        <el-button type="primary" @click="handleUpdate(scope.row)">
-          级别</el-button>
+        <template v-slot="scope">
+          <el-button type="primary" @click="handleUpdate(scope.row)">
+            级别
+          </el-button>
+        </template>
       </el-table-column>
     </el-table>
 
     <el-dialog v-model="dialog.visible">
       <el-form ref="dataForm" :model="temp" label-position="left"
         label-width="70px" style="width: 400px; margin-left:50px;">
-        <template v-if="dialogStatus == 'update'">
-          <el-form-item :label="$t('table.id')">
-            <el-input v-model="temp.id" type="text" placeholder="id" disabled />
+        <template v-if="dialog.status == 'update'">
+          <el-form-item label="key">
+            <el-input v-model="temp.key" type="text" placeholder="key"
+              disabled />
+          </el-form-item>
+          <el-form-item label="级别">
+            <el-select v-model="temp.level" placeholder="级别">
+              <el-option v-for="item in levelsOptions" :key="item" :label="item"
+                :value="item" />
+            </el-select>
           </el-form-item>
         </template>
 
@@ -47,6 +57,8 @@
 
       <template #footer>
         <div class="dialog-footer">
+          <el-button v-if="dialog.status == 'update'" type="primary"
+            @click="updateData()">{{ $tm('table.confirm') }}</el-button>
           <el-button @click="dialog.visible = false">{{ $t('table.cancel') }}
           </el-button>
         </div>
@@ -60,7 +72,7 @@ import { Refresh } from '@element-plus/icons-vue'
 import useLogsData from './composables/useLogsData'
 import useLogsDialog from './composables/useLogsDialog'
 
-const { list, listLoading, getData, handleFilter } = useLogsData()
+const { list, listLoading, levelsOptions, getData, handleFilter } = useLogsData()
 const { temp, dialog, handleUpdate } = useLogsDialog()
 </script>
 
@@ -75,7 +87,7 @@ export default {
         if (valid) {
           await changeLevel(this.temp)
           this.getData()
-          this.dialogVisible = false
+          this.dialog.visible = false
         }
       })
     }

@@ -4,8 +4,8 @@ export function getOperationLogs(params) {
   return request.get('/api/admin/operation-logs', { params })
 }
 
-export function changeLevel(data) {
-  return request.post('/management/loggers/${name}', data)
+export function changeLevel({ name, level }) {
+  return request.post(`/management/loggers/${name}`, { configuredLevel: level })
 }
 
 export function findAll(query) {

@@ -3,38 +3,38 @@ import getPageTitle from '@/utils/get-page-title'
 import { useAppStore } from '@/stores/app-store'
 import { useUserStore } from '@/stores/user-store'
 import { usePermissionStore } from '@/stores/permission-store'
+import { setTitle } from '@/utils/global'
 
-const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
+export default boot(async ({ app, router, store }) => {
+  const appStore = process.env ? useAppStore(store) : useAppStore();
 
-export default boot(async ({ app, router }) => {
-  // something to do
   router.beforeEach(async (to, from, next) => {
+    const userStore = process.env.SERVER ? useUserStore(store) : useUserStore();
+    const permissionStore = process.env.SERVER ? usePermissionStore(store) : usePermissionStore();
     // start progress bar
-    useAppStore().setLoading(true)
-
+    appStore.setLoading(true)
     // set page title
-    document.title = getPageTitle(to.meta.title)
-
+    setTitle(getPageTitle(to?.meta?.title))
     // determine whether the user has logged in
-    const hasToken = useUserStore().token
+    const hasToken = userStore.token
 
     if (hasToken) {
       if (to.path === '/login') {
         // if is logged in, redirect to the home page
         next({ path: '/' })
-        useAppStore().setLoading(false)
+        appStore.setLoading(false)
       } else {
         // determine whether the user has obtained his permission roles through getInfo
-        const hasRoles = useUserStore().roles?.length > 0
+        const hasRoles = userStore.roles?.length > 0
         if (hasRoles) {
           next()
         } else {
           try {
             // get user info
             // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-            const { roles } = await useUserStore().getInfo()
+            const { roles } = await userStore.getInfo()
             // generate accessible routes map based on roles
-            const accessRoutes = await usePermissionStore().generateRoutes(roles)
+            const accessRoutes = await permissionStore.generateRoutes(roles)
             // dynamically add accessible routes
             for (const accessRoute of accessRoutes) {
               router.addRoute(accessRoute)
@@ -45,33 +45,32 @@ export default boot(async ({ app, router }) => {
             next({ ...to, replace: true })
           } catch (error) {
             // remove token and go to login page to re-login
-            console.log('Get roles', error)
-            await useUserStore().resetToken()
-            useAppStore().setMessage({
+            console.error('Get roles', error)
+            await userStore.resetToken()
+            appStore.setMessage({
               text: error || 'Has Error',
               type: 'error'
             })
             next(`/login?redirect=${to.path}`)
-            useAppStore().setLoading(false)
+            appStore.setLoading(false)
           }
         }
       }
     } else {
       /* has no token*/
-
-      if (whiteList.indexOf(to.path) !== -1) {
-        // in the free login whitelist, go directly
+      if (!to?.meta?.roles) {
+        // not need roles, go directly
         next()
       } else {
         // other pages that do not have permission to access are redirected to the login page.
         next(`/login?redirect=${to.path}`)
-        useAppStore().setLoading(false)
+        appStore.setLoading(false)
       }
     }
   })
 
   router.afterEach(() => {
     // finish progress bar
-    useAppStore().setLoading(false)
+    appStore.setLoading(false)
   })
 })

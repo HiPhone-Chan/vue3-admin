@@ -87,7 +87,8 @@ export default {
     draft: 'Draft',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    name: 'Name'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

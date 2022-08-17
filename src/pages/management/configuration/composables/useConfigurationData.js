@@ -24,7 +24,7 @@ export default function useUserData() {
     for (const key in contexts) {
       tmpList.push({
         key,
-        ...contexts[key]
+        details: contexts[key]
       })
     }
     list.value = tmpList
@@ -39,14 +39,12 @@ export default function useUserData() {
     for (const key in components) {
       tmpList.push({
         key,
-        details: components[key].details,
-        status: components[key].status
+        details: components[key]
       })
     }
     list.value = tmpList
     listLoading.value = false
   }
-
 
   const handleFilter = () => {
     getData()
