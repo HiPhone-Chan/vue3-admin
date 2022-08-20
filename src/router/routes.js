@@ -42,13 +42,13 @@ const routes = [
         component: () => import('pages/home/index.vue'),
         name: 'home',
         hidden: true,
-        meta: { title: 'home', icon: 'dashboard', roles: [], affix: false }
+        meta: { title: 'home', icon: 'home', roles: [], affix: false }
       },
       {
         path: 'dashboard',
         component: () => import('pages/dashboard/index.vue'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', affix: true }
+        meta: { title: 'dashboard', icon: 'dashboard', roles: [], affix: true }
       }
     ]
   },
@@ -62,7 +62,7 @@ const routes = [
         path: 'index',
         component: () => import('pages/profile/index.vue'),
         name: 'Profile',
-        meta: { title: '个人中心', icon: 'user', noCache: true }
+        meta: { title: 'profile', icon: 'user', roles: [], noCache: true }
       }
     ]
   },
