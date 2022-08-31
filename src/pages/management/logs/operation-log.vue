@@ -14,12 +14,12 @@
       border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" :label="$t('table.id')" width="65"
         type="index" />
-      <el-table-column align="center" label="用户" width="95">
+      <el-table-column align="center" label="用户" width="155">
         <template v-slot="scope">
           <span>{{ scope.row.createdBy }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="方法" width="75">
+      <el-table-column align="center" label="方法" width="95">
         <template v-slot="scope">
           <span>{{ scope.row.method }}</span>
         </template>
@@ -29,7 +29,7 @@
           <span>{{ scope.row.path }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="时间" width="145">
+      <el-table-column align="center" label="时间" width="165">
         <template v-slot="scope">
           <span>{{ formatTime(scope.row.createdDate) }}</span>
         </template>
