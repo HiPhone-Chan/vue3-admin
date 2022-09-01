@@ -6,11 +6,6 @@ const storageType = 'cookies';
 
 export const useAppStore = defineStore('app', {
   state: () => ({
-    loading: false,
-    message: { // 消息提醒
-      text: "",
-      type: "" // 消息提醒类型
-    },
     sidebar: {
       opened: true,
       withoutAnimation: false
@@ -20,12 +15,6 @@ export const useAppStore = defineStore('app', {
     size: 'medium'
   }),
   actions: {
-    setLoading(loading) {
-      this.loading = loading
-    },
-    setMessage({ type, message }) {
-      this.message = { type, text: message }
-    },
     toggleSideBar() {
       this.sidebar = {
         opened: !this.sidebar.opened,
