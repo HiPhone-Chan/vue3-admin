@@ -1,6 +1,6 @@
 import Layout from '@/layouts/MainLayout.vue'
 
-const managementRouter = {
+export default {
   path: '/management',
   component: Layout,
   // redirect: 'noredirect',
@@ -73,4 +73,4 @@ const managementRouter = {
   ]
 }
 
-export default managementRouter
+export const priority = 0
