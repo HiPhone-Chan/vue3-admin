@@ -18,6 +18,11 @@ export default {
       component: () => import('@/pages/component-demo/tinymce.vue'),
       name: 'TinymceDemo',
       meta: { title: 'tinymce', icon: 'component' }
+    }, {
+      path: 'excel',
+      component: () => import('@/pages/component-demo/excel.vue'),
+      name: 'ExcelDemo',
+      meta: { title: 'excel', icon: 'excel' }
     }
   ]
 }
