@@ -2,7 +2,7 @@ import Clipboard from 'clipboard'
 import { useEventStore } from '@/stores/event-store'
 
 function clipboardSuccess() {
-  useEventStore().setNotification({
+  useEventStore().emit('notification', {
     message: 'Copy successfully',
     type: 'success',
     duration: 1500
@@ -10,7 +10,7 @@ function clipboardSuccess() {
 }
 
 function clipboardError() {
-  useEventStore().setNotification({
+  useEventStore().emit('notification', {
     message: 'Copy failed',
     type: 'error'
   })
