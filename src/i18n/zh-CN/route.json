@@ -9,5 +9,7 @@
   "user-management": "用户管理",
   "Clipboard": "剪贴板",
   "Component": "组件",
-  "Nested Routes": "嵌套路由"
+  "Nested Routes": "嵌套路由",
+  "Charts": "图表",
+  "Line Chart": "折线图表"
 }
