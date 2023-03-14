@@ -69,6 +69,16 @@ export default {
         icon: 'documentation',
         noCache: true
       }
+    },
+    {
+      path: 'threaddump',
+      component: () => import('pages/management/threaddump/index.vue'),
+      name: 'threaddump-management',
+      meta: {
+        title: 'threaddump-management',
+        icon: 'documentation',
+        noCache: true
+      }
     }
   ]
 }

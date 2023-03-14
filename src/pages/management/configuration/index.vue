@@ -33,7 +33,6 @@
 </template>
 
 <script setup>
-import { Refresh } from '@element-plus/icons-vue'
 import useConfigurationData from './composables/useConfigurationData'
 
 const { dataSelect, list, listLoading, getData, handleFilter } = useConfigurationData()
@@ -45,5 +44,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,7 +1,7 @@
 import { ref, onMounted } from 'vue';
 import { loadConfiguration, loadEnvConfiguration } from '@/api/management';
 
-export default function useUserData() {
+export default function () {
   const dataSelect = ref('config');
   const list = ref([]);
   let listLoading = ref(false);

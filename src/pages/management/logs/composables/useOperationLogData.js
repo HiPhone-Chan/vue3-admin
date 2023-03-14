@@ -1,7 +1,7 @@
 import { getCurrentInstance, ref, reactive, onBeforeMount, onMounted, watch, nextTick } from 'vue';
 import { getOperationLogs } from '@/api/log'
 
-export default function useUserData() {
+export default function () {
   const app = getCurrentInstance().appContext.config.globalProperties;
   const list = ref([]);
   let total = ref(0);

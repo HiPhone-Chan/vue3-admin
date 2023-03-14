@@ -42,8 +42,7 @@
         label-width="70px" style="width: 400px; margin-left:50px;">
         <template v-if="dialog.status == 'update'">
           <el-form-item label="key">
-            <el-input v-model="temp.key" type="text" placeholder="key"
-              disabled />
+            <el-input v-model="temp.key" type="text" placeholder="key" disabled />
           </el-form-item>
           <el-form-item label="级别">
             <el-select v-model="temp.level" placeholder="级别">
@@ -68,7 +67,6 @@
 </template>
 
 <script setup>
-import { Refresh } from '@element-plus/icons-vue'
 import useLogsData from './composables/useLogsData'
 import useLogsDialog from './composables/useLogsDialog'
 
@@ -95,5 +93,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

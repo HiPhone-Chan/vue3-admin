@@ -44,8 +44,7 @@
 
 <script setup>
 import Pagination from '@/components/Pagination/index.vue'
-import { Search } from '@element-plus/icons-vue'
-import { formatAuthorities, roleOptions, createRoleOptions } from '@/utils/app-option'
+import { formatAuthorities, roleOptions, createRoleOptions } from '@/utils/user'
 import useOperationLogData from './composables/useOperationLogData'
 import { formatTime } from '@/utils'
 
@@ -60,5 +59,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

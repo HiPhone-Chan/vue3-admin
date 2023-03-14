@@ -1,7 +1,7 @@
 import { ref, onMounted } from 'vue';
 import { checkHealth } from '@/api/management';
 
-export default function useUserData() {
+export default function () {
   const list = ref([]);
   let listLoading = ref(false);
 

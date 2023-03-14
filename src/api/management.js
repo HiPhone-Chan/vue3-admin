@@ -11,3 +11,7 @@ export function loadConfiguration() {
 export function loadEnvConfiguration() {
   return request.get('/management/env')
 }
+
+export function retrieveThreadDump() {
+  return request.get('/management/threaddump')
+}

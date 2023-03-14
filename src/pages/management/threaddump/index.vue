@@ -12,19 +12,24 @@
       border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" :label="$t('table.id')" width="65"
         type="index" />
-      <el-table-column align="center" label="key" width="135">
+      <el-table-column align="center" label="线程名" width="205">
         <template v-slot="scope">
-          <span>{{ scope.row.key }}</span>
+          <span>{{ scope.row.threadName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态" width="75">
+      <el-table-column align="center" label="状态" min-width="75">
         <template v-slot="scope">
-          <span>{{ scope.row.status }}</span>
+          <span>{{ scope.row.threadState }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="详情" min-width="115">
+      <el-table-column align="center" label="阻塞次数" min-width="75">
         <template v-slot="scope">
-          <span>{{ scope.row.details }}</span>
+          <span>{{ scope.row.blockedCount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="被等次数" min-width="75">
+        <template v-slot="scope">
+          <span>{{ scope.row.waitedCount }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -32,14 +37,14 @@
 </template>
 
 <script setup>
-import useHealthData from './composables/useHealthData'
+import useThreaddumpData from './composables/useThreaddumpData'
 
-const { list, listLoading, getData, handleFilter } = useHealthData()
+const { list, listLoading, getData, handleFilter } = useThreaddumpData()
 </script>
 
 <script>
 export default {
-  name: "HealthManagement"
+  name: "ThreaddumpManagement"
 }
 </script>
 <style></style>

@@ -10,5 +10,6 @@
   "configuration-management": "配置管理",
   "logs-management": "日志管理",
   "operation-log": "操作日志",
-  "health-management": "健康管理"
+  "health-management": "健康管理",
+  "threaddump-management": "线程管理"
 }

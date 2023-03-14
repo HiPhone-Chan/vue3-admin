@@ -1,30 +1,19 @@
 import { ref, onMounted } from 'vue';
-import { findAll } from '@/api/log'
+import { retrieveThreadDump } from '@/api/management';
 
 export default function () {
   const list = ref([]);
-  const levelsOptions = ref([]);
   let listLoading = ref(false);
-
 
   const getData = async () => {
     listLoading.value = true
-    const { data } = await findAll()
-    const loggers = data.loggers
-    const tmpList = []
-    for (const key in loggers) {
-      tmpList.push({
-        name: key,
-        ...loggers[key]
-      })
-    }
-    list.value = tmpList
-    levelsOptions.value = data.levels
+    const resp = await retrieveThreadDump()
+    const components = resp.data.components
+    list.value = resp.data.threads
     listLoading.value = false
   }
 
   onMounted(() => getData());
-
 
   const handleFilter = () => {
     getData()
@@ -33,7 +22,6 @@ export default function () {
   return {
     list,
     listLoading,
-    levelsOptions,
     getData,
     handleFilter
   }
