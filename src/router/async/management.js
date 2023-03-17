@@ -1,4 +1,4 @@
-import Layout from '@/layouts/MainLayout.vue'
+import Layout from 'layouts/MainLayout.vue'
 
 export default {
   path: '/management',
@@ -18,6 +18,14 @@ export default {
         title: 'user-management',
         icon: 'people',
         noCache: true
+      }
+    },
+    {
+      path: 'test',
+      component: () => import('pages/dynamic-menu/index.vue'),
+      meta: {
+        title: 'user-management',
+        icon: 'people',
       }
     }
   ]

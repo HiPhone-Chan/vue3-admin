@@ -1,0 +1,11 @@
+[{
+  "path": "/dynamic-menu",
+  "title": "Dynamic Route",
+  "icon": "nested",
+  "children": [{
+    "path": "",
+    "page": "dynamic-menu/index.vue",
+    "title": "Dynamic Route",
+    "icon": "nested"
+  }]
+}]

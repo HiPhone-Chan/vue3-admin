@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { asyncRoutes, constantRoutes } from '@/router/routes';
+import { getRoutes } from '@/router/dynaimic';
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -49,6 +50,8 @@ export const usePermissionStore = defineStore('permission', {
       } else {
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
+      const dynamicRoutes = await getRoutes();
+      accessedRoutes = accessedRoutes.concat(dynamicRoutes)
       this.addRoutes = accessedRoutes
       this.routes = constantRoutes.concat(accessedRoutes)
       return accessedRoutes
