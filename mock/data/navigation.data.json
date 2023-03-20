@@ -1,11 +1,15 @@
-[{
-  "path": "/dynamic-menu",
-  "title": "Dynamic Route",
-  "icon": "nested",
-  "children": [{
-    "path": "",
-    "page": "dynamic-menu/index.vue",
+[
+  {
+    "path": "/dynamic-menu",
     "title": "Dynamic Route",
-    "icon": "nested"
-  }]
-}]
+    "icon": "nested",
+    "children": [
+      {
+        "path": "child",
+        "page": "index.vue",
+        "title": "Dynamic Route",
+        "icon": "nested"
+      }
+    ]
+  }
+]
