@@ -1,4 +1,4 @@
-import Layout from '@/layouts/MainLayout.vue'
+import Layout from '@/layouts/MainLayout.vue';
 
 export default {
   path: '/management',
@@ -22,13 +22,34 @@ export default {
     },
     {
       path: 'configuration',
-      component: () => import('pages/management/configuration/index.vue'),
-      name: 'configuration-management',
+      redirect: 'index',
       meta: {
         title: 'configuration-management',
         icon: 'documentation',
         noCache: true
-      }
+      },
+      children: [
+        {
+          path: 'index',
+          component: () => import('pages/management/configuration/index.vue'),
+          name: 'configuration-management',
+          meta: {
+            title: 'configuration-prop-management',
+            icon: 'documentation',
+            noCache: true
+          }
+        },
+        {
+          path: 'env',
+          component: () => import('pages/management/configuration/env.vue'),
+          name: 'configuration-env-management',
+          meta: {
+            title: 'configuration-env-management',
+            icon: 'documentation',
+            noCache: true
+          }
+        }
+      ]
     },
     {
       path: 'logs',
@@ -81,6 +102,6 @@ export default {
       }
     }
   ]
-}
+};
 
-export const priority = 0
+export const priority = 10;

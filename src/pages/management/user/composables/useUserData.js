@@ -1,4 +1,11 @@
-import { getCurrentInstance, ref, reactive, onBeforeMount, onMounted, watch, nextTick } from 'vue';
+import {
+  getCurrentInstance,
+  ref,
+  reactive,
+  onBeforeMount,
+  onMounted,
+  watch
+} from 'vue';
 import { getUsers } from '@/api/user';
 
 export default function () {
@@ -13,36 +20,37 @@ export default function () {
   });
 
   const getData = async () => {
-    listLoading.value = true
-    const resp = await getUsers(listQuery)
-    list.value = resp.data
-    total.value = Number(resp.headers['x-total-count'])
-    listLoading.value = false
-  }
+    listLoading.value = true;
+    const resp = await getUsers(listQuery);
+    list.value = resp.data;
+    total.value = Number(resp.headers['x-total-count']);
+    listLoading.value = false;
+  };
 
   onBeforeMount(() => {
-    const query = app.$route.query
+    const query = app.$route.query;
     if (query) {
       let queryVal = listQuery;
-      queryVal.page = query.page ? Number(query.page) : queryVal.page
-      queryVal.size = query.size ? Number(query.size) : queryVal.size
+      queryVal.page = query.page ? Number(query.page) : queryVal.page;
+      queryVal.size = query.size ? Number(query.size) : queryVal.size;
     }
-  })
+  });
   onMounted(() => getData());
 
-  watch(() => listQuery,
+  watch(
+    () => listQuery,
     (val, oldVal) => {
       app.$router.push({
         query: listQuery
-      })
+      });
     },
     { deep: true }
-  )
+  );
 
   const handleFilter = () => {
-    listQuery.page = 0
-    getData()
-  }
+    listQuery.page = 0;
+    getData();
+  };
 
   return {
     list,
@@ -51,5 +59,5 @@ export default function () {
     listQuery,
     getData,
     handleFilter
-  }
+  };
 }

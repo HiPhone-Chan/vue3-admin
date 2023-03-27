@@ -6,23 +6,22 @@ export default function () {
   let listLoading = ref(false);
 
   const getData = async () => {
-    listLoading.value = true
-    const resp = await retrieveThreadDump()
-    const components = resp.data.components
-    list.value = resp.data.threads
-    listLoading.value = false
-  }
+    listLoading.value = true;
+    const resp = await retrieveThreadDump();
+    list.value = resp.data.threads;
+    listLoading.value = false;
+  };
 
   onMounted(() => getData());
 
   const handleFilter = () => {
-    getData()
-  }
+    getData();
+  };
 
   return {
     list,
     listLoading,
     getData,
     handleFilter
-  }
+  };
 }

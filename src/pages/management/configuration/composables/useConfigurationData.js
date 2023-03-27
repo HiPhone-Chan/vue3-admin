@@ -1,60 +1,44 @@
 import { ref, onMounted } from 'vue';
-import { loadConfiguration, loadEnvConfiguration } from '@/api/management';
+import { loadConfiguration } from '@/api/management';
 
 export default function () {
-  const dataSelect = ref('config');
   const list = ref([]);
   let listLoading = ref(false);
 
   onMounted(() => getData());
 
   const getData = async () => {
-    if (dataSelect.value === 'config') {
-      getConfigData()
-    } else {
-      getEnvData()
-    }
-  }
+    listLoading.value = true;
+    await getConfigData();
+    listLoading.value = false;
+  };
 
   const getConfigData = async () => {
-    listLoading.value = true
-    const resp = await loadConfiguration()
-    const contexts = resp.data.contexts
-    const tmpList = []
+    const resp = await loadConfiguration();
+    const contexts = resp.data.contexts;
+    let propertiesObject = {};
     for (const key in contexts) {
-      tmpList.push({
-        key,
-        details: contexts[key]
-      })
+      if (!key.startsWith('bootstrap')) {
+        propertiesObject = contexts[key]['beans'];
+        break;
+      }
     }
-    list.value = tmpList
-    listLoading.value = false
-  }
 
-  const getEnvData = async () => {
-    listLoading.value = true
-    const resp = await loadEnvConfiguration()
-    const components = resp.data
-    const tmpList = []
-    for (const key in components) {
-      tmpList.push({
-        key,
-        details: components[key]
-      })
+    const tmpList = [];
+    for (const key in propertiesObject) {
+      tmpList.push(propertiesObject[key]);
     }
-    list.value = tmpList
-    listLoading.value = false
-  }
+    tmpList.sort((propertyA, propertyB) => {
+      const comparePrefix = propertyA.prefix < propertyB.prefix ? -1 : 1;
+      return propertyA.prefix === propertyB.prefix ? 0 : comparePrefix;
+    });
 
-  const handleFilter = () => {
-    getData()
-  }
+    list.value = tmpList;
+  };
 
   return {
-    dataSelect,
     list,
     listLoading,
-    getData,
-    handleFilter
-  }
+    getData
+  };
 }

@@ -1,30 +1,29 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" @click="handleFilter">
+      <el-button class="filter-item" type="primary" @click="getData">
         <el-icon style="margin-right: 10px;">
           <Refresh />
         </el-icon>{{ $t('table.refresh') }}
       </el-button>
-      <el-radio-group v-model="dataSelect" class="filter-item"
-        style="margin-left: 20px;" @change="getData">
-        <el-radio :label="'config'">配置</el-radio>
-        <el-radio :label="'env'">环境</el-radio>
-      </el-radio-group>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="给我一点时间"
-      border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" :label="$t('table.id')" width="65"
-        type="index" />
-      <el-table-column align="center" label="key" width="215">
+    <el-table v-loading="listLoading" :data="list" element-loading-text="给我一点时间" border fit highlight-current-row
+      style="width: 100%">
+      <el-table-column align="center" :label="$t('table.id')" width="65" type="index" />
+      <el-table-column align="center" label="prefix" width="315">
         <template v-slot="scope">
-          <span>{{ scope.row.key }}</span>
+          <span>{{ scope.row.prefix }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="详情" min-width="115">
+      <el-table-column align="center" label="properties" min-width="115">
         <template v-slot="scope">
-          <span>{{ scope.row.details }}</span>
+          <el-row v-for="key in Object.keys(scope.row.properties)" :key="key">
+            <el-col :span="4">{{ key }}</el-col>
+            <el-col :span="20">
+              {{ scope.row.properties[key] }}
+            </el-col>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -35,7 +34,7 @@
 <script setup>
 import useConfigurationData from './composables/useConfigurationData'
 
-const { dataSelect, list, listLoading, getData, handleFilter } = useConfigurationData()
+const { list, listLoading, getData } = useConfigurationData()
 </script>
 
 <script>

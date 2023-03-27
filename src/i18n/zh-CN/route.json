@@ -8,6 +8,8 @@
   "management": "管理",
   "user-management": "用户管理",
   "configuration-management": "配置管理",
+  "configuration-prop-management": "配置属性",
+  "configuration-env-management": "配置环境",
   "logs-management": "日志管理",
   "operation-log": "操作日志",
   "health-management": "健康管理",
