@@ -92,14 +92,34 @@ export default {
       }
     },
     {
-      path: 'threaddump',
-      component: () => import('pages/management/threaddump/index.vue'),
-      name: 'threaddump-management',
+      path: 'metrics',
       meta: {
-        title: 'threaddump-management',
+        title: 'metrics',
         icon: 'documentation',
         noCache: true
-      }
+      },
+      children: [
+        {
+          path: 'index',
+          component: () => import('pages/management/metrics/index.vue'),
+          name: 'metrics',
+          meta: {
+            title: 'metrics',
+            icon: 'documentation',
+            noCache: true
+          }
+        },
+        {
+          path: 'threaddump',
+          component: () => import('pages/management/metrics/thread-dump.vue'),
+          name: 'threaddump-management',
+          meta: {
+            title: 'threaddump-management',
+            icon: 'documentation',
+            noCache: true
+          }
+        }
+      ]
     }
   ]
 };

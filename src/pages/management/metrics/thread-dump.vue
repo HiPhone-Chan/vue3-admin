@@ -51,9 +51,9 @@
 </template>
 
 <script setup>
-import useThreaddumpData from './composables/useThreaddumpData'
+import useThreadDumpData from './composables/useThreadDumpData'
 
-const { list, listLoading, getData, handleFilter } = useThreaddumpData()
+const { list, listLoading, getData, handleFilter } = useThreadDumpData()
 </script>
 
 <script>
