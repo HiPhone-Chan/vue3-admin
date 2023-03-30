@@ -6,7 +6,6 @@
     "children": [
       {
         "path": "child",
-        "page": "index.vue",
         "title": "Dynamic Route",
         "icon": "nested"
       }

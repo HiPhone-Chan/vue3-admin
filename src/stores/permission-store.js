@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia';
-import { asyncRoutes, constantRoutes } from '@/router/routes';
-import { getRoutes } from '@/router/dynaimic';
+import {
+  asyncRoutes,
+  constantRoutes,
+  dynamicRoutes,
+  getDynamicRoutes
+} from '@/router/routes';
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -8,11 +12,11 @@ import { getRoutes } from '@/router/dynaimic';
  * @param route
  */
 function hasPermission(roles, route) {
-  const routeRoles = route?.meta?.roles
+  const routeRoles = route?.meta?.roles;
   if (routeRoles && routeRoles.length) {
-    return roles.some(role => routeRoles.includes(role))
+    return roles.some((role) => routeRoles.includes(role));
   } else {
-    return true
+    return true;
   }
 }
 
@@ -22,19 +26,19 @@ function hasPermission(roles, route) {
  * @param roles
  */
 export function filterAsyncRoutes(routes, roles) {
-  const res = []
+  const res = [];
 
-  routes.forEach(route => {
-    const tmp = { ...route }
+  routes.forEach((route) => {
+    const tmp = { ...route };
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
+        tmp.children = filterAsyncRoutes(tmp.children, roles);
       }
-      res.push(tmp)
+      res.push(tmp);
     }
-  })
+  });
 
-  return res
+  return res;
 }
 
 export const usePermissionStore = defineStore('permission', {
@@ -44,17 +48,18 @@ export const usePermissionStore = defineStore('permission', {
   }),
   actions: {
     async generateRoutes(roles) {
-      let accessedRoutes
+      let accessedRoutes;
       if (roles.includes('ROLE_ADMIN')) {
-        accessedRoutes = asyncRoutes || []
+        accessedRoutes = asyncRoutes || [];
+        accessedRoutes = accessedRoutes.concat(dynamicRoutes);
       } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
+        const dynamicRoutes = await getDynamicRoutes();
+        accessedRoutes = accessedRoutes.concat(dynamicRoutes);
       }
-      const dynamicRoutes = await getRoutes();
-      accessedRoutes = accessedRoutes.concat(dynamicRoutes)
-      this.addRoutes = accessedRoutes
-      this.routes = constantRoutes.concat(accessedRoutes)
-      return accessedRoutes
+      this.addRoutes = accessedRoutes;
+      this.routes = constantRoutes.concat(accessedRoutes);
+      return accessedRoutes;
     }
   }
-})
+});
