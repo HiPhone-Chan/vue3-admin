@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
-    <el-input v-model="inputData" placeholder="Please input"
-      style="width:400px;max-width:100%;" />
+    <el-input v-model="inputData" placeholder="Please input" style="width:400px;max-width:100%;" />
     <el-button type="primary" @click="handleCopy(inputData, $event)">
       <el-icon>
         <Document />
@@ -13,11 +12,9 @@
 
 <script>
 import clip from '@/utils/clipboard' // use clipboard directly
-import { Document } from '@element-plus/icons-vue'
 
 export default {
   name: 'ClipboardDemo',
-  components: { Document },
   data() {
     return {
       inputData: 'https://github.com/HiPhone-Chan/vue3-admin'
@@ -31,6 +28,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

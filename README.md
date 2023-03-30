@@ -59,6 +59,14 @@ set to sort the router asc order
 - set empty array [] means to require authorization to access page
 - set null or net set means to you can access directly without authorization
 
+### dynamic routes
+
+dynamic routes get routes from http request, files are changed as listed.
+
+- src/router/dynamic
+- src/router/route.js
+- src/stores/permission-store.js
+
 ## reference
 
 [quasar](https://quasar.dev/)
