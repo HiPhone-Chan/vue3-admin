@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" @click="handleFilter">
+      <el-button class="filter-item" type="primary" @click="getData">
         <el-icon style="margin-right: 10px;">
           <Refresh />
         </el-icon>{{ $t('table.refresh') }}
@@ -39,8 +39,8 @@
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px"
         style="width: 400px; margin-left:50px;">
         <template v-if="dialog.status == STATUS_UPDATE">
-          <el-form-item label="key">
-            <el-input v-model="temp.key" type="text" placeholder="key" disabled />
+          <el-form-item :label="$t('table.name')">
+            <el-input v-model="temp.name" type="text" placeholder="key" disabled />
           </el-form-item>
           <el-form-item label="级别">
             <el-select v-model="temp.level" placeholder="级别">
@@ -52,7 +52,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button v-if="dialog.status == STATUS_UPDATE" type="primary" @click="updateData()">
+          <el-button v-if="dialog.status == STATUS_UPDATE" type="primary" @click="updateData">
             {{ $t('table.confirm') }}
           </el-button>
           <el-button @click="dialog.visible = false">{{ $t('table.cancel') }}
@@ -64,11 +64,11 @@
 </template>
 
 <script setup>
-import useLogsData from './composables/useLogsData'
 import useLogsDialog from './composables/useLogsDialog'
+import useLogsData from './composables/useLogsData'
 
 const { temp, dialog } = useLogsDialog()
-const { list, listLoading, levelsOptions, STATUS_UPDATE, getData, handleFilter,
+const { list, listLoading, levelsOptions, STATUS_UPDATE, getData,
   handleUpdate, updateData } = useLogsData(temp, dialog, 'dataForm')
 </script>
 

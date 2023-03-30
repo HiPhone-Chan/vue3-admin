@@ -5,7 +5,7 @@ export default function (temp, dialog, formName) {
   const list = ref([]);
   const levelsOptions = ref([]);
   const instance = getCurrentInstance();
-  let listLoading = ref(false);
+  const listLoading = ref(false);
 
   const getData = async () => {
     listLoading.value = true;
@@ -24,10 +24,6 @@ export default function (temp, dialog, formName) {
   };
 
   onMounted(() => getData());
-
-  const handleFilter = () => {
-    getData();
-  };
 
   const STATUS_UPDATE = 'update';
   const handleUpdate = (row) => {
@@ -59,7 +55,6 @@ export default function (temp, dialog, formName) {
     levelsOptions,
     STATUS_UPDATE,
     getData,
-    handleFilter,
     handleUpdate,
     updateData
   };

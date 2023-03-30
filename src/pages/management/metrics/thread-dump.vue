@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" @click="handleFilter">
+      <el-button class="filter-item" type="primary" @click="getData">
         <el-icon style="margin-right: 10px;">
           <Refresh />
         </el-icon>{{ $t('table.refresh') }}
@@ -53,7 +53,7 @@
 <script setup>
 import useThreadDumpData from './composables/useThreadDumpData'
 
-const { list, listLoading, getData, handleFilter } = useThreadDumpData()
+const { list, listLoading, getData } = useThreadDumpData()
 </script>
 
 <script>

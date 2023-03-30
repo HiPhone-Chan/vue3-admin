@@ -14,14 +14,9 @@ export default function () {
 
   onMounted(() => getData());
 
-  const handleFilter = () => {
-    getData();
-  };
-
   return {
     list,
     listLoading,
-    getData,
-    handleFilter
+    getData
   };
 }
