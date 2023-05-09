@@ -1,6 +1,6 @@
 # quasar-skeleton
 
-A Quasar Project
+A vue3 admin project
 
 ## Install the dependencies
 
@@ -70,3 +70,5 @@ dynamic routes get routes from http request, files are changed as listed.
 ## reference
 
 [quasar](https://quasar.dev/)
+[element-plus](https://element-plus.org/)
+[PanJiaChen](https://github.com/PanJiaChen/vue-element-admin)
