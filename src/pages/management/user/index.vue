@@ -9,12 +9,12 @@
         @keyup.enter="handleFilter" />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         <el-icon style="margin-right: 10px;">
-          <Search />
+          <el-icon-search />
         </el-icon>{{ $t('table.search') }}
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="handleCreate">
         <el-icon style="margin-right: 10px;">
-          <Edit />
+          <el-icon-edit />
         </el-icon>{{ $t('table.add') }}
       </el-button>
     </div>
@@ -102,11 +102,11 @@
         <div class="dialog-footer">
           <el-button @click="dialog.visible = false">{{ $t('table.cancel') }}
           </el-button>
-          <el-button v-if="dialog.status == STATUS_CREATE" type="primary" @click="createData()">{{ $t('table.confirm') }}
+          <el-button v-if="dialog.status == STATUS_CREATE" type="primary" @click="createData">{{ $t('table.confirm') }}
           </el-button>
-          <el-button v-if="dialog.status == STATUS_UPDATE" type="primary" @click="updateData()">{{ $t('table.confirm') }}
+          <el-button v-if="dialog.status == STATUS_UPDATE" type="primary" @click="updateData">{{ $t('table.confirm') }}
           </el-button>
-          <el-button v-if="dialog.status == STATUS_PASSWORD" type="primary" @click="changePwd()">{{ $t('table.confirm') }}
+          <el-button v-if="dialog.status == STATUS_PASSWORD" type="primary" @click="changePwd">{{ $t('table.confirm') }}
           </el-button>
         </div>
       </template>
