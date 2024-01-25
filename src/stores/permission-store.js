@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, acceptHMRUpdate } from 'pinia';
 import { asyncRoutes, constantRoutes } from '@/router/routes';
 
 /**
@@ -8,11 +8,12 @@ import { asyncRoutes, constantRoutes } from '@/router/routes';
  */
 export function hasPermission(roles, route) {
   const routeRoles = route?.meta?.roles
-  if (routeRoles && routeRoles.length) {
+  if (routeRoles === false) {
+    return true;
+  } else if (routeRoles?.length) {
     return roles.some(role => routeRoles.includes(role))
-  } else {
-    return true
   }
+  return true;
 }
 
 /**
@@ -55,3 +56,7 @@ export const usePermissionStore = defineStore('permission', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePermissionStore, import.meta.hot))
+}

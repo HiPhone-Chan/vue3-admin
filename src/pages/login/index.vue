@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules"
-      class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
+      label-position="left">
 
       <div class="title-container">
         <h3 class="title">
@@ -13,31 +13,25 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input ref="username" v-model="loginForm.username"
-          :placeholder="$t('login.username')" name="username" type="text"
-          tabindex="1" auto-complete="on" />
+        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username"
+          type="text" tabindex="1" auto-complete="on" />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On"
-        placement="right" manual>
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input :key="passwordType" ref="password"
-            v-model="loginForm.password" :type="passwordType"
-            :placeholder="$t('login.password')" name="password" tabindex="2"
-            autocomplete="on" @keyup="checkCapslock" @blur="capsTooltip = false"
-            @keyup.enter="handleLogin" />
+          <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
+            :placeholder="$t('login.password')" name="password" tabindex="2" autocomplete="on" @keyup="checkCapslock"
+            @blur="capsTooltip = false" @keyup.enter="handleLogin" />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon
-              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary"
-        style="width:100%;margin-bottom:30px;" @click.prevent="handleLogin">
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
 
@@ -48,7 +42,7 @@
 <script>
 import { validUsername } from '@/utils/user'
 import LangSelect from '@/components/LangSelect/index.vue'
-import { useUserStore } from '@/stores/user-store'
+import { login } from '@/utils/auth'
 
 export default {
   name: 'LoginIndex',
@@ -129,7 +123,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          useUserStore().login(this.loginForm).then(() => {
+          login(this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
             this.loading = false
           }).catch((err) => {
