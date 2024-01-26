@@ -5,7 +5,7 @@
         @keyup.enter="handleFilter" />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         <el-icon style="margin-right: 10px;">
-          <Search />
+          <el-icon-search />
         </el-icon>{{ $t('table.search') }}
       </el-button>
     </div>

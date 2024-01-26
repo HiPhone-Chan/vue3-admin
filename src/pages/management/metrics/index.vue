@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-button class="filter-item" type="primary" @click="handleFilter">
         <el-icon style="margin-right: 10px;">
-          <Refresh />
+          <el-icon-refresh />
         </el-icon>{{ $t('table.refresh') }}
       </el-button>
     </div>
