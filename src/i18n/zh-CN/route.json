@@ -14,5 +14,6 @@
   "operation-log": "操作日志",
   "health-management": "健康管理",
   "metrics": "指标",
-  "threaddump-management": "线程管理"
+  "threaddump-management": "线程管理",
+  "api-docs": "api文档"
 }

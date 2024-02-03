@@ -19,3 +19,7 @@ export function getMetrics() {
 export function retrieveThreadDump() {
   return request.get('/management/threaddump');
 }
+
+export function getOpenApiGroups() {
+  return request.get('/management/sysopenapigroups');
+}
