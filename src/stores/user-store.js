@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import { login, logout, getInfo } from '@/api/login'
-import Router, { resetRouter } from '@/router'
+import { defineStore, acceptHMRUpdate } from 'pinia';
+import { getInfo } from '@/api/login'
+import defaultAvatar from '@/assets/avatar.gif'
 
 const storageType = 'cookies';
 
@@ -17,13 +17,6 @@ export const useUserStore = defineStore('user', {
   getters: {
   },
   actions: {
-    // user login
-    async login(userInfo) {
-      const { username, password } = userInfo
-      const response = await login({ username: username, password: password })
-      const { data } = response
-      this.token = data.id_token
-    },
 
     // get user info
     async getInfo() {
@@ -48,16 +41,9 @@ export const useUserStore = defineStore('user', {
       this.name = name
       this.nickname = nickName
       this.mobile = mobile
-      this.avatar = avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+      this.avatar = avatar || defaultAvatar
       this.introduction = introduction
       return data
-    },
-
-    // user logout
-    async logout() {
-      await logout(this.token)
-      await this.resetToken()
-      resetRouter(Router)
     },
 
     // remove token
@@ -73,3 +59,8 @@ export const useUserStore = defineStore('user', {
     }
   }
 });
+
+// https://pinia.vuejs.org/cookbook/hot-module-replacement.html
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+}

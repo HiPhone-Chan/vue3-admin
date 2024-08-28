@@ -1,50 +1,50 @@
-import { getCurrentInstance, nextTick } from 'vue';
+import { getCurrentInstance } from 'vue';
 import { changePassword } from '@/api/user';
 
-export default function (temp, dialog, formName) {
+export const STATUS_PASSWORD = 'password';
+export default function (openDialog, closeDialog, dialogForm, formName) {
   const instance = getCurrentInstance();
   const app = instance.appContext.config.globalProperties;
-  const STATUS_PASSWORD = 'password';
 
   const handlePassword = (row) => {
-    dialog.status = STATUS_PASSWORD;
-    dialog.visible = true;
-    temp.value = {
+    dialogForm.value = {
       login: row.login,
       currentPassword: '',
       newPassword: ''
     };
-
-    nextTick(() => {
-      instance.refs[formName].clearValidate();
-    });
+    openDialog(STATUS_PASSWORD, formName);
   };
 
-  const changePwd = () => {
-    instance.refs[formName].validate(async (valid) => {
-      if (valid) {
-        const val = temp.value;
-        const changePwdVM = {
-          currentPassword: val.currentPassword,
-          newPassword: val.newPassword
-        };
+  const changePwd = async () => {
+    try {
+      const val = dialogForm.value;
+      const changePwdVM = {
+        currentPassword: val.currentPassword,
+        newPassword: val.newPassword
+      };
 
-        try {
-          await changePassword(val.login, changePwdVM);
+      await closeDialog(async () => {
+        await changePassword(val.login, changePwdVM);
+      }, formName);
+
+      app.$notify({
+        type: 'success',
+        title: '修改成功'
+      });
+    } catch (error) {
+      console.log('changePwd failed', error);
+      const errType = Object.prototype.toString.call(error);
+      switch (errType) {
+        case '[object Object]':
+          break; // 校验失败
+        default:
           app.$notify({
-            title: '修改成功',
-            type: 'success'
+            type: 'warning',
+            title: '修改失败'
           });
-        } catch (err) {
-          app.$notify({
-            title: '修改失败',
-            type: 'warning'
-          });
-        }
-        dialog.visible = false;
       }
-    });
+    }
   };
 
-  return { handlePassword, changePwd, STATUS_PASSWORD };
+  return { handlePassword, changePwd };
 }

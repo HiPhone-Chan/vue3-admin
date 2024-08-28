@@ -15,7 +15,7 @@ import { useAppStore } from '@/stores/app-store'
 export default defineComponent({
   name: 'App',
   computed: {
-    ...mapState(useEventStore, ['loading', 'notification']),
+    ...mapState(useEventStore, ['loading', 'error']),
     ...mapState(useAppStore, ['language']),
     locale() {
       return messages[this.language]
@@ -28,10 +28,33 @@ export default defineComponent({
       } else {
         this.$loading.hide()
       }
-    },
-    notification(msg) { // receive global notification message
-      this.$message(msg)
     }
+  },
+  errorCaptured(err) {
+    // 自定义的err结构 {
+    //   type: "",
+    //   info: null
+    // }
+    console.warn("handleError :", err); // for debug
+    const type = err?.type
+    let msgType = 'error'
+    let message = 'Error not handled!'
+
+    if (type !== undefined) {
+      msgType = type;
+      switch (type) {
+        case 'request':
+          break;
+        default:
+      }
+      message = err.info
+    }
+    this.$message({
+      type: msgType,
+      message
+    })
+
+    return false
   }
 })
 </script>

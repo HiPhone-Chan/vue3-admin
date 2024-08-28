@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules"
-      class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
+      label-position="left">
 
       <div class="title-container">
         <h3 class="title">
@@ -13,31 +13,25 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input ref="username" v-model="loginForm.username"
-          :placeholder="$t('login.username')" name="username" type="text"
-          tabindex="1" auto-complete="on" />
+        <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username"
+          type="text" tabindex="1" auto-complete="on" />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On"
-        placement="right" manual>
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input :key="passwordType" ref="password"
-            v-model="loginForm.password" :type="passwordType"
-            :placeholder="$t('login.password')" name="password" tabindex="2"
-            autocomplete="on" @keyup="checkCapslock" @blur="capsTooltip = false"
-            @keyup.enter="handleLogin" />
+          <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
+            :placeholder="$t('login.password')" name="password" tabindex="2" autocomplete="on" @keyup="checkCapslock"
+            @blur="capsTooltip = false" @keyup.enter="handleLogin" />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon
-              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary"
-        style="width:100%;margin-bottom:30px;" @click.prevent="handleLogin">
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
 
@@ -48,7 +42,7 @@
 <script>
 import { validUsername } from '@/utils/user'
 import LangSelect from '@/components/LangSelect/index.vue'
-import { useUserStore } from '@/stores/user-store'
+import { login } from '@/utils/auth'
 
 export default {
   name: 'LoginIndex',
@@ -125,23 +119,14 @@ export default {
         this.passwordType = 'password'
       }
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          useUserStore().login(this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-            this.loading = false
-          }).catch((err) => {
-            console.log('login fail', err)
-            this.loading = false
-          })
-        } else {
-          console.log('login error submit!!')
-          this.loading = false
-          return false
-        }
-      })
+    async handleLogin() {
+      const valid = await this.$refs.loginForm.validate();
+      if (valid) {
+        this.loading = true;
+        await login(this.loginForm);
+        this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+      }
+      this.loading = false;
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
@@ -151,6 +136,15 @@ export default {
         return acc
       }, {})
     }
+  },
+  errorCaptured(err) {
+    console.log('login failed', err)
+    this.loading = false;
+    this.$message({
+      type: 'error',
+      message: 'login failed.'
+    })
+    return false;
   }
 }
 </script>
@@ -186,7 +180,7 @@ $cursor: #fff;
     input {
       background: transparent;
       border: 0px;
-      -webkit-appearance: none;
+      appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 10px;
       color: $light_gray;

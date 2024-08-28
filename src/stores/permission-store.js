@@ -1,23 +1,19 @@
-import { defineStore } from 'pinia';
-import {
-  asyncRoutes,
-  constantRoutes,
-  dynamicRoutes,
-  getDynamicRoutes
-} from '@/router/routes';
+import { defineStore, acceptHMRUpdate } from 'pinia';
+import { asyncRoutes, constantRoutes, dynamicRoutes, getDynamicRoutes } from '@/router/routes';
 
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
  * @param route
  */
-function hasPermission(roles, route) {
+export function hasPermission(roles, route) {
   const routeRoles = route?.meta?.roles;
-  if (routeRoles && routeRoles.length) {
-    return roles.some((role) => routeRoles.includes(role));
-  } else {
+  if (routeRoles === false) {
     return true;
+  } else if (routeRoles?.length) {
+    return roles.some((role) => routeRoles.includes(role));
   }
+  return true;
 }
 
 /**
@@ -63,3 +59,7 @@ export const usePermissionStore = defineStore('permission', {
     }
   }
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePermissionStore, import.meta.hot));
+}
