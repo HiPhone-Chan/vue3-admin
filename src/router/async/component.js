@@ -21,10 +21,10 @@ export default {
       meta: { title: 'tinymce', icon: 'component' }
     },
     {
-      path: 'json-editor',
-      component: () => import('pages/component-demo/json-editor.vue'),
-      name: 'JsonEditorDemo',
-      meta: { title: 'json', icon: 'component' }
+      path: 'code-mirror',
+      component: () => import('pages/component-demo/code-mirror.vue'),
+      name: 'CodeMirrorDemo',
+      meta: { title: 'CodeMirror', icon: 'component' }
     },
     {
       path: 'excel',
