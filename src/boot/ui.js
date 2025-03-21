@@ -1,4 +1,4 @@
-import { boot } from 'quasar/wrappers'
+import { defineBoot } from '#q-app/wrappers'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import NProgress from 'nprogress' // progress bar
@@ -12,9 +12,9 @@ import 'nprogress/nprogress.css' // progress bar style
 // for other ui library
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
-export default boot(async ({ app }) => {
+export default defineBoot(async ({ app }) => {
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component("el-icon-" + key.toLowerCase(), component)
+    app.component(iconName(key), component)
   }
 
   app.config.globalProperties.$loading = {
@@ -23,7 +23,7 @@ export default boot(async ({ app }) => {
     },
     hide() {
       NProgress.done()
-    }
+    },
   }
   app.config.globalProperties.$message = ElMessage
   app.config.globalProperties.$alert = ElMessageBox.alert
@@ -31,3 +31,10 @@ export default boot(async ({ app }) => {
   app.config.globalProperties.$prompt = ElMessageBox.prompt
   app.config.globalProperties.$notify = ElNotification
 })
+
+function iconName(key) {
+  let temp = key.replace(/[A-Z]/g, function (i) {
+    return '-' + i.toLowerCase()
+  })
+  return `el-icon${temp}`
+}

@@ -1,20 +1,18 @@
-import { boot } from 'quasar/wrappers'
+import { defineBoot } from '#q-app/wrappers'
 import { createI18n } from 'vue-i18n'
 import messages from 'src/i18n'
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/stores/app-store'
 
-let i18nGlobal;
-
-export default boot(({ app, store }) => {
-  const appStore = process.env.SERVER ? useAppStore(store) : useAppStore();
-  const i18n = createI18n({
-    locale: appStore.language,
-    globalInjection: true,
-    messages
-  })
-  i18nGlobal = i18n.global
-  // Set i18n instance on app
-  app.use(i18n)
+const _i18n = createI18n({
+  globalInjection: true,
+  messages,
 })
 
-export { i18nGlobal as i18n }
+export default defineBoot(({ app, store }) => {
+  // Set i18n instance on app
+  app.use(_i18n)
+  const appStore = process.env.SERVER ? useAppStore(store) : useAppStore()
+  app.config.globalProperties.$i18n.locale = appStore.language
+})
+
+export const i18n = _i18n.global

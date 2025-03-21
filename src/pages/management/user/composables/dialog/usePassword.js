@@ -1,55 +1,41 @@
-import { getCurrentInstance, nextTick } from 'vue';
+import { getCurrentInstance } from 'vue';
 import { changePassword } from '@/api/user';
 
-export default function (temp, dialog, formName) {
+export const STATUS_PASSWORD = 'password';
+export default function (openDialog, confirmDialog, dialogForm, formName) {
   const instance = getCurrentInstance();
   const app = instance.appContext.config.globalProperties;
-  const STATUS_PASSWORD = 'password';
+
+  const passwordRules = {
+    currentPassword: [{ required: true, message: 'Current password is required' }],
+    newPassword: [{ required: true, message: 'New password is required' }]
+  };
 
   const handlePassword = (row) => {
-    dialog.status = STATUS_PASSWORD;
-    dialog.visible = true;
-    temp.value = {
+    dialogForm.value = {
       login: row.login,
       currentPassword: '',
       newPassword: ''
     };
-
-    nextTick(() => {
-      instance.refs[formName].clearValidate();
-    });
+    openDialog(formName, STATUS_PASSWORD);
   };
 
   const changePwd = async () => {
-    try {
-      if (!await instance.refs[formName].validate()) {
-        return;
-      }
+    const val = dialogForm.value;
+    const changePwdVM = {
+      currentPassword: val.currentPassword,
+      newPassword: val.newPassword
+    };
 
-      const val = temp.value;
-      const changePwdVM = {
-        currentPassword: val.currentPassword,
-        newPassword: val.newPassword
-      };
+    await confirmDialog(formName, async () => {
       await changePassword(val.login, changePwdVM);
-      app.$notify({
-        type: 'success',
-        title: '修改成功'
-      });
-      dialog.visible = false;
-    } catch (error) {
-      console.log('changePwd failed', error)
-      const errType = Object.prototype.toString.call(error)
-      switch (errType) {
-        case '[object Object]': break; // 校验失败
-        default:
-          app.$notify({
-            type: 'warning',
-            title: '修改失败'
-          });
-      }
-    }
+    });
+
+    app.$notify({
+      type: 'success',
+      title: '修改成功'
+    });
   };
 
-  return { handlePassword, changePwd, STATUS_PASSWORD };
+  return { handlePassword, changePwd, passwordRules };
 }

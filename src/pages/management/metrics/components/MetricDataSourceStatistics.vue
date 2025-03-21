@@ -40,17 +40,20 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps({
-  databases: Object
+  databases: Object,
 })
 
 const list = computed(() => {
-  const list = [];
-  const actions = ['acquire', 'creation', 'usage'];
+  const list = []
+  const actions = ['acquire', 'creation', 'usage']
   for (const action of actions) {
-    const entry = props.databases[action];
+    const entry = props.databases[action]
+    if (!entry) {
+      continue
+    }
     list.push({
       count: entry.count,
       mean: Number(entry.mean).toFixed(2),
@@ -59,13 +62,11 @@ const list = computed(() => {
       p75: entry['0.75'],
       p95: entry['0.95'],
       p99: entry['0.99'],
-      max: Number(entry.max).toFixed(2)
-
+      max: Number(entry.max).toFixed(2),
     })
   }
-  return list;
+  return list
 })
-
 </script>
 
 <style></style>

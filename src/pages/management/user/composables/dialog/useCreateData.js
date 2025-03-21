@@ -1,42 +1,54 @@
-import { getCurrentInstance, nextTick } from 'vue';
 import { createRoleOptions } from '@/utils/user';
-import { createUser } from '@/api/user';
+import { checkUserLogin, createUser } from '@/api/user';
+import { LOGIN_VALID_CHARACTER } from '@/utils/user';
 
-export default function (temp, dialog, formName, getData) {
-  const instance = getCurrentInstance();
-  const STATUS_CREATE = 'create';
+export const STATUS_CREATE = 'create';
+export default function (openDialog, confirmDialog, dialog, dialogForm, getData, formName) {
+  const validateLogin = async (rule, value, callback) => {
+    if (dialog.status === STATUS_CREATE) {
+      if (value) {
+        if (LOGIN_VALID_CHARACTER.pattern.test(value)) {
+          const resp = await checkUserLogin(value);
+          const data = resp.data;
+          if (data) {
+            callback(new Error('Login exists'));
+          }
+        } else {
+          callback(new Error(LOGIN_VALID_CHARACTER.message));
+        }
+      } else {
+        callback(new Error('Please enter login'));
+      }
+    }
+  };
+
+  const createRules = {
+    login: [{ required: true, trigger: 'blur', validator: validateLogin }],
+    authorities: [
+      {
+        required: true,
+        message: '请选择权限'
+      }
+    ],
+    mobile: [{ pattern: /^[0-9]{7,16}$/, message: '请输入正确的电话号码' }]
+  };
 
   const handleCreate = () => {
-    dialog.status = STATUS_CREATE;
-    dialog.visible = true;
-    temp.value = {
+    dialogForm.value = {
       login: '',
       nickName: '',
       mobile: '',
       authorities: [createRoleOptions[0].value]
     };
-
-    nextTick(() => {
-      instance.refs[formName].clearValidate();
-    });
+    openDialog(formName, STATUS_CREATE);
   };
 
   const createData = async () => {
-    try {
-      if (!await instance.refs[formName].validate()) {
-        return;
-      }
-      await createUser(temp.value);
-      getData();
-      dialog.visible = false;
-    } catch (error) {
-      console.log('createData failed', error)
-      const errType = Object.prototype.toString.call(error)
-      switch (errType) {
-        case '[object Object]': break; // 校验失败
-      }
-    }
+    await confirmDialog(formName, async () => {
+      await createUser(dialogForm.value);
+    });
+    getData();
   };
 
-  return { handleCreate, createData, STATUS_CREATE };
+  return { handleCreate, createData, createRules };
 }
