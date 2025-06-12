@@ -1,22 +1,24 @@
 <template>
   <div class="app-container">
-    <p v-if="!isSupported"> Your browser does not support Clipboard API </p>
-    <p> Clipboard Permission:
-      read <b>{{ permissionRead }}</b> | write <b>{{ permissionWrite }}</b>
+    <p v-if="!isSupported">Your browser does not support Clipboard API</p>
+    <p>
+      Clipboard Permission: read <b>{{ permissionRead }}</b> | write <b>{{ permissionWrite }}</b>
     </p>
-    <el-input v-model="inputData" placeholder="Please input" class="w-full max-w-96" />
-    <el-button class="ml-1" type="primary" @click="handleCopy">
-      <el-icon> <el-icon-document /> </el-icon> copy
-    </el-button>
+    <el-input v-model="inputData" placeholder="Please input">
+      <template #prepend>
+        <el-button type="primary" @click="handleCopy">
+          <el-icon> <el-icon-document /> </el-icon> copy
+        </el-button>
+      </template>
+    </el-input>
 
     <hr />
     <div class="text-green">
       Current copied:
-      <p v-if="copied"> {{ text }}</p>
+      <p v-if="copied">{{ text }}</p>
     </div>
 
-    <el-input v-model="pasteInput" type="textarea" :rows="10" class="w-full max-w-96"
-      placeholder="Paste copied content here" />
+    <el-input v-model="pasteInput" type="textarea" :rows="10" placeholder="Paste copied content here" />
   </div>
 </template>
 
@@ -38,7 +40,7 @@ const handleCopy = () => {
 
 <script>
 export default {
-  name: 'ClipboardDemo'
+  name: 'ClipboardDemo',
 }
 </script>
 

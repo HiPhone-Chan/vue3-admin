@@ -1,21 +1,26 @@
-import { boot } from 'quasar/wrappers'
-import { getPageTitle, setTitle } from '@/utils/page-title'
-import { useEventStore } from '@/stores/event-store'
+import { defineBoot } from '#q-app/wrappers'
+import defaultSettings from '@/settings'
+import { useTitle } from '@vueuse/core'
+import { useAppStore } from '@/stores/app-store'
 import { useUserStore } from '@/stores/user-store'
+import { useI18nStore } from '@/stores/i18n-store'
 import { usePermissionStore, hasPermission } from '@/stores/permission-store'
 import { useTagsViewStore } from '@/stores/tags-view-store'
 
-export default boot(async ({ app, router, store }) => {
-  const eventStore = process.env.SERVER ? useEventStore(store) : useEventStore();
-  const tagsViewStore = process.env.SERVER ? useTagsViewStore(store) : useTagsViewStore();
+const title = defaultSettings.title || 'App'
+
+export default defineBoot(async ({ router, store }) => {
+  const appStore = process.env.SERVER ? useAppStore(store) : useAppStore()
+  const i18nStore = process.env.SERVER ? useI18nStore(store) : useI18nStore()
+  const tagsViewStore = process.env.SERVER ? useTagsViewStore(store) : useTagsViewStore()
 
   router.beforeEach(async (to, from, next) => {
-    const userStore = process.env.SERVER ? useUserStore(store) : useUserStore();
-    const permissionStore = process.env.SERVER ? usePermissionStore(store) : usePermissionStore();
+    const userStore = process.env.SERVER ? useUserStore(store) : useUserStore()
+    const permissionStore = process.env.SERVER ? usePermissionStore(store) : usePermissionStore()
     // start progress bar
-    eventStore.emit('loading', true);
+    appStore.loading(true)
     // set page title
-    setTitle(getPageTitle(to?.meta?.title))
+    useTitle(getPageTitle(to?.meta?.title))
     // determine whether the user has logged in
     const hasToken = userStore.token
 
@@ -23,7 +28,6 @@ export default boot(async ({ app, router, store }) => {
       if (to.path === '/login') {
         // if is logged in, redirect to the home page
         next({ path: '/' })
-        eventStore.emit('loading', false)
       } else {
         // determine whether the user has obtained his permission roles through getInfo
         const hasRoles = userStore.roles?.length > 0
@@ -31,8 +35,8 @@ export default boot(async ({ app, router, store }) => {
           if (hasPermission(userStore.roles, to)) {
             next()
           } else {
-            tagsViewStore.delAllVisitedViews();
-            tagsViewStore.delAllCachedViews();
+            tagsViewStore.delAllVisitedViews()
+            tagsViewStore.delAllCachedViews()
             next({ path: '/' })
           }
         } else {
@@ -54,29 +58,31 @@ export default boot(async ({ app, router, store }) => {
             // remove token and go to login page to re-login
             console.error('Get roles', error)
             await userStore.resetToken()
-            eventStore.emit('error', {
-              info: error || 'Has Error'
-            })
             next(`/login?redirect=${to.path}`)
-            eventStore.emit('loading', false)
           }
         }
       }
     } else {
       /* has no token*/
-      if (to?.meta?.roles === false) {
+      if (process.env.SERVER || to?.meta?.roles === false) {
         // not need roles, go directly
         next()
       } else {
         // other pages that do not have permission to access are redirected to the login page.
         next(`/login?redirect=${to.path}`)
-        eventStore.emit('loading', false)
       }
     }
   })
 
   router.afterEach(() => {
     // finish progress bar
-    eventStore.emit('loading', false)
+    appStore.loading(false)
   })
+
+  function getPageTitle(pageTitle) {
+    if (pageTitle) {
+      return `${i18nStore.generateTitle(pageTitle)} - ${title}`
+    }
+    return `${title}`
+  }
 })

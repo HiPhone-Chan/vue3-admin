@@ -1,16 +1,14 @@
 <template>
-  <textarea ref="tiny"></textarea>
+  <editor id="uuid" licenseKey="gpl" :init="init()" />
 </template>
 
+<script setup>
+import Editor from '@tinymce/tinymce-vue'
+import { init } from '@/components/Tinymce/config'
+</script>
 
 <script>
-import { render } from '@/components/Tinymce/config'
 export default {
   name: 'TinymceEditor',
-  mounted() {
-    render({
-      target: this.$refs["tiny"]
-    })
-  }
 }
 </script>

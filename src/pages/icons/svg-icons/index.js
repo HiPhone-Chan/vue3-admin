@@ -1,8 +1,8 @@
-const svgIconModules = import.meta.globEager('/src/icons/svg/**.svg');
-const iconNames = [];
+const svgIconModules = import.meta.glob('/src/icons/svg/**.svg', { eager: true })
+const iconNames = []
 
 Object.keys(svgIconModules).forEach((key) => {
-  iconNames.push(key.replace('/src/icons/svg/', '').replace('.svg', ''));
-});
+  iconNames.push(key.replace('/src/icons/svg/', '').replace('.svg', ''))
+})
 
-export default iconNames;
+export default iconNames

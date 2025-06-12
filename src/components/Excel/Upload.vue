@@ -1,14 +1,9 @@
 <template>
   <div>
-    <input ref="excel-upload-input" class="excel-upload-input" type="file"
-      accept=".xlsx, .xls" @change="handleClick">
-    <div class="drop" @drop="handleDrop" @dragover="handleDragover"
-      @dragenter="handleDragover">
+    <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick" />
+    <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
       Drop excel file here or
-      <el-button :loading="loading" style="margin-left:16px;" type="primary"
-        @click="handleUpload">
-        Browse
-      </el-button>
+      <el-button :loading="loading" style="margin-left: 16px" type="primary" @click="handleUpload"> Browse </el-button>
     </div>
   </div>
 </template>
@@ -19,16 +14,16 @@ import * as XLSX from 'xlsx'
 export default {
   name: 'ExcelUpload',
   props: {
-    beforeUpload: Function, // eslint-disable-line
-    onSuccess: Function// eslint-disable-line
+    beforeUpload: Function,
+    onSuccess: Function,
   },
   data() {
     return {
       loading: false,
       excelData: {
         header: null,
-        results: null
-      }
+        results: null,
+      },
     }
   },
   methods: {
@@ -84,9 +79,9 @@ export default {
     },
     readerData(rawFile) {
       this.loading = true
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve /* reject */) => {
         const reader = new FileReader()
-        reader.onload = e => {
+        reader.onload = (e) => {
           const data = e.target.result
           const workbook = XLSX.read(data, { type: 'array' })
           const firstSheetName = workbook.SheetNames[0]
@@ -106,7 +101,8 @@ export default {
       let C
       const R = range.s.r
       /* start in the first row */
-      for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
+      for (C = range.s.c; C <= range.e.c; ++C) {
+        /* walk every column in the range */
         const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })]
         /* find the cell in the first row */
         let hdr = 'UNKNOWN ' + C // <-- replace with your desired default
@@ -117,8 +113,8 @@ export default {
     },
     isExcel(file) {
       return /\.(xlsx|xls|csv)$/.test(file.name)
-    }
-  }
+    },
+  },
 }
 </script>
 

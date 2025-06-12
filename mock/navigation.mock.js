@@ -1,6 +1,6 @@
 const data = require("./data/navigation.data.json");
 
-module.exports = [
+export default [
   {
     url: `${process.env.VUE_APP_API_BASE}/api/navigation/trees`,
     method: "GET",

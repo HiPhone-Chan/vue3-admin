@@ -1,60 +1,62 @@
 <template>
-  <el-config-provider :locale="locale">
+  <el-config-provider :locale="locale" :size="size">
     <router-view />
   </el-config-provider>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import messages from '@/i18n/index'
+import { elLocale } from '@/i18n/index'
 import 'default-passive-events' // 消除浏览器passive-events警告
 import { mapState } from 'pinia'
-import { useEventStore } from '@/stores/event-store'
 import { useAppStore } from '@/stores/app-store'
 
 export default defineComponent({
   name: 'App',
   computed: {
-    ...mapState(useEventStore, ['loading', 'error']),
-    ...mapState(useAppStore, ['language']),
+    ...mapState(useAppStore, ['language', 'size', 'isLoading']),
     locale() {
-      return messages[this.language]
-    }
+      return elLocale[this.language]
+    },
   },
   watch: {
-    loading(loading) { // global loading
+    language(lang) {
+      this.$i18n.locale = lang
+    },
+    isLoading(loading) {
+      // global loading
       if (loading) {
         this.$loading.show()
       } else {
         this.$loading.hide()
       }
-    }
+    },
   },
   errorCaptured(err) {
     // 自定义的err结构 {
     //   type: "",
     //   info: null
     // }
-    console.warn("handleError :", err); // for debug
+    console.warn('handleError :', err) // for debug
     const type = err?.type
     let msgType = 'error'
     let message = 'Error not handled!'
 
     if (type !== undefined) {
-      msgType = type;
+      msgType = type
       switch (type) {
         case 'request':
-          break;
+          break
         default:
       }
       message = err.info
     }
     this.$message({
       type: msgType,
-      message
+      message,
     })
 
-    return false
-  }
+    // return false
+  },
 })
 </script>

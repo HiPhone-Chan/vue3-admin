@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import defaultSettings from '@/settings'
 import variables from '@/css/element-variables.module.scss'
 
@@ -10,13 +10,17 @@ export const useSettingsStore = defineStore('settings', {
     showSettings: showSettings,
     tagsView: tagsView,
     fixedHeader: fixedHeader,
-    sidebarLogo: sidebarLogo
+    sidebarLogo: sidebarLogo,
   }),
   actions: {
     changeSetting({ key, value }) {
-      if (this.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(this, key)) {
         this[key] = value
       }
-    }
-  }
+    },
+  },
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSettingsStore, import.meta.hot))
+}
